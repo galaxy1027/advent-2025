@@ -46,34 +46,22 @@ int solutionPart2(char *inputPath) {
             rotation = atoi(line.substr(1).c_str()) * direction;
             position = (position + (rotation % 100) + 100) % 100;
 
-            // Count number of clicks from very large rotations
-            while (abs(rotation) > 100) {
-                if (rotation > 0) {
-                    rotation -= 100;
-                } else {
-                    rotation += 100;
-                }
-                clicksDuringRotation++;
-            }
+            // Count number of clicks from very large rotations (every 100 turns
+            // is a gurarnteed pass by 0)
+            clicksDuringRotation += abs(rotation / 100);
 
             // Only consider these cases if previous position was not 0. This
             // prevents duplicate clicks.
             if (prevPosition != 0) {
                 if (position == 0) {
-                    std::cout << line << " click... (reached 0)\n";
                     clicksAtEnd++;
                 } else if (direction == -1 && (position > prevPosition)) {
-                    std::cout << line << " click...\n";
                     clicksDuringRotation++;
                 } else if (direction == 1 && (position < prevPosition)) {
-                    std::cout << line << " click...\n";
                     clicksDuringRotation++;
                 }
             }
 
-            std::cout << "previous position " << prevPosition << "\n";
-            std::cout << "position " << position << "\n";
-            std::cout << "..........................\n";
             prevPosition = position;
         }
     }
